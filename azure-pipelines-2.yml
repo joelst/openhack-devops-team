@@ -1,0 +1,51 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+name: User-Java Docker Build (Yaml)
+
+trigger:
+  branches: 
+    include:
+    - master 
+  paths:
+    include:
+    - apis/user-java/*
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        dockerfile: '$(Build.SourcesDirectory)/apis/user-java/Dockerfile'
+        tags: |
+          $(tag)
+
+# This job creates a work item, and only runs if the previous job failed
+  - job: ErrorHandler
+    dependsOn: Build
+    condition: failed()
+    steps: 
+    - bash: |
+        az boards work-item create \
+          --title "Build $(build.buildNumber) failed" \
+          --type bug \
+          --org $(System.TeamFoundationCollectionUri) \
+          --project $(System.TeamProject)
+      env:
+        AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+        displayName: 'Create work item on failure'
