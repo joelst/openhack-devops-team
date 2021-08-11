@@ -42,8 +42,9 @@ stages:
         azureSubscription: 'OTA-PRD-290 (c493a5b9-d7ce-431f-aad3-eee8b414d665)'
         azureContainerRegistry: '{"loginServer":"openhackwf422ai1acr.azurecr.io", "id" : "/subscriptions/c493a5b9-d7ce-431f-aad3-eee8b414d665/resourceGroups/openhackwf422ai1rg/providers/Microsoft.ContainerRegistry/registries/openhackwf422ai1acr"}'
         action: 'Push an image'
-        imageName: ' devopsoh/api-trips:$(Build.BuildId)'
+        imageName: ' devopsoh/api-trips'
         includeLatestTag: true
+        additionalImageTags: $(Build.BuildId)
 
 # This job creates a work item, and only runs if the previous job failed
   - job: ErrorHandler
