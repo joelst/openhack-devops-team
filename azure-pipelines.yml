@@ -44,7 +44,6 @@ stages:
         tags: |
           $(tag)
 
-
 # This job creates a work item, and only runs if the previous job failed
   - job: ErrorHandler
     dependsOn: Build
@@ -54,7 +53,6 @@ stages:
       inputs:
         workItemType: bug
         title: 'Build failed ($Build.BuildId)'
-        linkWorkItems: true
         authToken: $(System.AccessToken)
         linkPR: true
       env:
