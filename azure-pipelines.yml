@@ -54,7 +54,6 @@ stages:
         workItemType: bug
         title: 'Build failed ($Build.BuildId)'
         authToken: $(System.AccessToken)
-        linkPR: true
       env:
         AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
       displayName: 'Create work item on failure'
