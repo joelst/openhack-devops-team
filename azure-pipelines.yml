@@ -32,6 +32,15 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/apis/trips/Dockerfile'
         tags: |
           $(tag)
+    - task: Docker@0
+      displayName: 'Push an image'
+      inputs:
+        azureSubscription: 'OTA-PRD-290 (c493a5b9-d7ce-431f-aad3-eee8b414d665)'
+        azureContainerRegistry: '{"loginServer":"openhackwf422ai1acr.azurecr.io", "id" : "/subscriptions/c493a5b9-d7ce-431f-aad3-eee8b414d665/resourceGroups/openhackwf422ai1rg/providers/Microsoft.ContainerRegistry/registries/openhackwf422ai1acr"}'
+        action: 'Push an image'
+        imageName: 'trips.$(Build.Repository.Name):$(Build.BuildId)'
+        includeLatestTag: true
+
 # This job creates a work item, and only runs if the previous job failed
   - job: ErrorHandler
     dependsOn: Build
