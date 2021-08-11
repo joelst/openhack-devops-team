@@ -9,6 +9,10 @@ trigger:
   paths:
     include:
     - apis/trips/*
+    exclude:
+      - apis/user-java/*
+      - apis/userprofile/*
+      - apis/pol/*
 
 resources:
 - repo: self
